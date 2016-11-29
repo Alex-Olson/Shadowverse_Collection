@@ -1,4 +1,3 @@
-import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -37,7 +36,7 @@ public class SVCollectionDB {
                 statement.executeUpdate(makeTable);
                 prepStatementInsert = "INSERT INTO shadowverse_collection_info VALUES ( ? , ? , ? , ? , ? , ? )";
                 prepStatement = connection.prepareStatement(prepStatementInsert);
-
+                //links used to learn how to parse excel files: https://github.com/minneapolis-edu/apache_poi + https://poi.apache.org/index.html + http://stackoverflow.com/questions/5878341/cannot-import-xssf-in-apache-poi
                 FileInputStream readStream = new FileInputStream("shadowverse_card_data.xlsx");
                 XSSFWorkbook workbook = new XSSFWorkbook(readStream);
                 XSSFSheet sheet = workbook.getSheetAt(0);
