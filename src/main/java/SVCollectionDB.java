@@ -7,16 +7,18 @@ import java.io.IOException;
 import java.sql.*;
 
 public class SVCollectionDB {
-    static final String DRIVER = "com.mysql.cj.jdbc.Driver";
-    static final String DB_URL = "jdbc:mysql://localhost:3306/shadowverse_collection";
-    static final String USERNAME = "alex";
-    static final String PASSWORD = "blah";
+    private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
+    private static final String DB_URL = "jdbc:mysql://localhost:3306/shadowverse_collection";
+    private static final String USERNAME = "alex";
+    private static final String PASSWORD = "blah";
 
-    static Statement statement = null;
-    static PreparedStatement prepStatement = null;
-    static Connection connection = null;
-    static ResultSet rs = null;
-    static String prepStatementInsert = null;
+    private static Statement statement = null;
+    private static PreparedStatement prepStatement = null;
+    private static Connection connection = null;
+    private static ResultSet rs = null;
+    private static String prepStatementInsert = null;
+
+    private static SVCollectionDM svCollectionDM;
 
     public static void main(String[] args) {
         try {
@@ -52,18 +54,30 @@ public class SVCollectionDB {
                     prepStatement.setInt(6, 0);
                     prepStatement.executeUpdate();
                 }
-
             }
-
-
+            getCollectionData();
+            SVCollectionGUI gui = new SVCollectionGUI(svCollectionDM);
         } catch (IOException ioe){
-            System.out.println(ioe);
+            ioe.printStackTrace();
         } catch (SQLException sqle){
-            System.out.println(sqle);
-        } finally {
-            closeDB();
+            sqle.printStackTrace();
         }
 
+    }
+
+    public static void getCollectionData(){
+        try {
+            String selectAll = "SELECT * FROM shadowverse_collection_info";
+            rs = statement.executeQuery(selectAll);
+
+            if (svCollectionDM == null) {
+                svCollectionDM = new SVCollectionDM(rs);
+            } else {
+                svCollectionDM.updateModel(rs);
+            }
+        } catch (SQLException sqle){
+            sqle.printStackTrace();
+        }
     }
 
     public static void closeDB(){
@@ -73,8 +87,8 @@ public class SVCollectionDB {
                 prepStatement.close();
             }
             connection.close();
-        } catch (SQLException sqlex){
-            sqlex.printStackTrace();
+        } catch (SQLException sqle){
+            sqle.printStackTrace();
         }
     }
 
