@@ -56,20 +56,20 @@ public class SVCollectionDM extends AbstractTableModel {
 
     @Override
     public boolean isCellEditable(int row, int col){
-        if (col == 5){
-            return true;
-        } else {
-            return false;
-        }
+        return col == 5;
     }
 
     @Override
     public void setValueAt(Object newInt, int row, int column){
         int newNumOwned;
         try {
+
             newNumOwned = Integer.parseInt(newInt.toString());
-        } catch (Exception ex) {
-           ex.printStackTrace();
+            if (newNumOwned < 0 || newNumOwned > 3){
+                throw new NumberFormatException("Can't have less than 0 or more than 3 of a card");
+            }
+        } catch (NumberFormatException nfe) {
+            nfe.printStackTrace();
             return;
         }
 
