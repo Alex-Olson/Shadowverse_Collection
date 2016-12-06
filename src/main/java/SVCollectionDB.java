@@ -80,6 +80,24 @@ public class SVCollectionDB {
         }
     }
 
+    public static int getNumberOfDuplicates(String set, String rarity){
+        try {
+            String prepStatementCountDupes = "SELECT COUNT(*) AS num_of_dupes FROM shadowverse_collection_info WHERE " +
+                    "Card_Set = ? AND Number_Owned = 3 AND Rarity = ?";
+            prepStatement = connection.prepareStatement(prepStatementCountDupes);
+            prepStatement.setString(1, set);
+            prepStatement.setString(2, rarity);
+            rs = prepStatement.executeQuery();
+            rs.next();
+            return rs.getInt("num_of_dupes");
+        } catch (SQLException sqle){
+            sqle.printStackTrace();
+        }
+        return 0;
+    }
+
+
+
     public static void closeDB(){
         try {
             statement.close();
