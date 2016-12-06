@@ -79,7 +79,7 @@ public class SVCollectionDB {
             sqle.printStackTrace();
         }
     }
-
+    //gets the number of cards that would create "duplicates" (having more then 3 of
     public static int getNumberOfDuplicates(String set, String rarity){
         try {
             String prepStatementCountDupes = "SELECT COUNT(*) AS num_of_dupes FROM shadowverse_collection_info WHERE " +
