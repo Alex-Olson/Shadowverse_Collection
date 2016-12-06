@@ -18,7 +18,7 @@ public class SVCollectionGUI extends JFrame {
     final double CHANCE_OF_SILVER_NOT_8TH = .25;
     final double CHANCE_OF_SILVER_8TH = .925;
     final double CHANCE_OF_BRONZE = .675;
-    //number of cards in each rarity in the standard/darkness sets.
+    //number of cards in each rarity in the standard/darkness sets. https://steam.shadowverse.com/drawrates/
     final double LEGENDARIES_IN_STANDARD = 24;
     final double GOLDS_IN_STANDARD = 69;
     final double SILVERS_IN_STANDARD = 99;
@@ -62,19 +62,33 @@ public class SVCollectionGUI extends JFrame {
                 double avgDustGainDarkness = 0.0;
 
                 int duplicatesStandard = SVCollectionDB.getNumberOfDuplicates("Standard", "Legendary");
-                avgDustGainStandard += (duplicatesStandard/LEGENDARIES_IN_STANDARD * LEGENDARY_DUST_LIQUEFY * CHANCE_OF_LEGENDARY * 8) + ((LEGENDARIES_IN_STANDARD - duplicatesStandard)/LEGENDARIES_IN_STANDARD * LEGENDARY_DUST_CREATE * CHANCE_OF_LEGENDARY * 8);
+                avgDustGainStandard += (duplicatesStandard/LEGENDARIES_IN_STANDARD * LEGENDARY_DUST_LIQUEFY + ((LEGENDARIES_IN_STANDARD - duplicatesStandard)/LEGENDARIES_IN_STANDARD) * LEGENDARY_DUST_CREATE) * CHANCE_OF_LEGENDARY * 8;
 
                 duplicatesStandard = SVCollectionDB.getNumberOfDuplicates("Standard", "Gold");
-                avgDustGainStandard += (duplicatesStandard/GOLDS_IN_STANDARD * GOLD_DUST_LIQUEFY * CHANCE_OF_GOLD * 8) + ((GOLDS_IN_STANDARD - duplicatesStandard)/GOLDS_IN_STANDARD * GOLD_DUST_CREATE * CHANCE_OF_GOLD * 8);
+                avgDustGainStandard += (duplicatesStandard/GOLDS_IN_STANDARD * GOLD_DUST_LIQUEFY + ((GOLDS_IN_STANDARD - duplicatesStandard)/GOLDS_IN_STANDARD) * GOLD_DUST_CREATE) * CHANCE_OF_GOLD * 8;
+
+                duplicatesStandard = SVCollectionDB.getNumberOfDuplicates("Standard", "Silver");
+                avgDustGainStandard += (duplicatesStandard/SILVERS_IN_STANDARD * SILVER_DUST_LIQUEFY + ((SILVERS_IN_STANDARD - duplicatesStandard)/SILVERS_IN_STANDARD) * SILVER_DUST_CREATE) * (CHANCE_OF_SILVER_NOT_8TH * 7 + CHANCE_OF_SILVER_8TH);
+
+                duplicatesStandard = SVCollectionDB.getNumberOfDuplicates("Standard", "Bronze");
+                avgDustGainStandard += (duplicatesStandard/BRONZES_IN_STANDARD * BRONZE_DUST_LIQUEFY + ((BRONZES_IN_STANDARD - duplicatesStandard)/BRONZES_IN_STANDARD) * BRONZE_DUST_CREATE) * CHANCE_OF_BRONZE * 7;
+
 
                 int duplicatesDarkness = SVCollectionDB.getNumberOfDuplicates("Darkness", "Legendary");
-                avgDustGainDarkness += (duplicatesDarkness/LEGENDARIES_IN_DARKNESS * LEGENDARY_DUST_LIQUEFY * CHANCE_OF_LEGENDARY * 8) + ((LEGENDARIES_IN_DARKNESS - duplicatesDarkness)/LEGENDARIES_IN_DARKNESS * LEGENDARY_DUST_CREATE * CHANCE_OF_LEGENDARY * 8);
+                avgDustGainDarkness += (duplicatesDarkness/LEGENDARIES_IN_DARKNESS * LEGENDARY_DUST_LIQUEFY + ((LEGENDARIES_IN_DARKNESS - duplicatesDarkness)/LEGENDARIES_IN_DARKNESS) * LEGENDARY_DUST_CREATE) * CHANCE_OF_LEGENDARY * 8;
 
                 duplicatesDarkness = SVCollectionDB.getNumberOfDuplicates("Darkness", "Gold");
-                avgDustGainDarkness += (duplicatesDarkness/GOLDS_IN_DARKNESS * GOLD_DUST_LIQUEFY * CHANCE_OF_GOLD * 8) + ((GOLDS_IN_DARKNESS - duplicatesDarkness)/GOLDS_IN_DARKNESS * GOLD_DUST_CREATE * CHANCE_OF_GOLD * 8);
+                avgDustGainDarkness += (duplicatesDarkness/GOLDS_IN_DARKNESS * GOLD_DUST_LIQUEFY + ((GOLDS_IN_DARKNESS - duplicatesDarkness)/GOLDS_IN_DARKNESS) * GOLD_DUST_CREATE) * CHANCE_OF_GOLD * 8;
 
-                JOptionPane.showMessageDialog(rootPanel, "Dust from legendaries/golds in Standard: " + avgDustGainStandard +
-                        "\nDust from legendaries/golds in Darkness: " + avgDustGainDarkness);
+                duplicatesDarkness = SVCollectionDB.getNumberOfDuplicates("Darkness", "Silver");
+                avgDustGainDarkness += (duplicatesDarkness/SILVERS_IN_DARKNESS * SILVER_DUST_LIQUEFY + ((SILVERS_IN_DARKNESS - duplicatesDarkness)/SILVERS_IN_DARKNESS) * SILVER_DUST_CREATE) * (CHANCE_OF_SILVER_NOT_8TH * 7 + CHANCE_OF_SILVER_8TH);
+
+                duplicatesDarkness = SVCollectionDB.getNumberOfDuplicates("Darkness", "Bronze");
+                avgDustGainDarkness += (duplicatesDarkness/BRONZES_IN_DARKNESS * BRONZE_DUST_LIQUEFY + ((BRONZES_IN_DARKNESS - duplicatesDarkness)/BRONZES_IN_DARKNESS) * BRONZE_DUST_CREATE) * CHANCE_OF_BRONZE * 7;
+
+
+                JOptionPane.showMessageDialog(rootPanel, "Standard pack value: " + avgDustGainStandard +
+                        " dust\nDarkness pack value: " + avgDustGainDarkness + " dust");
             }
         });
 
