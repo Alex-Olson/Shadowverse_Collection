@@ -5,7 +5,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.*;
-
+//todo: comment this stuff
 public class SVCollectionDB {
     private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
     private static final String DB_URL = "jdbc:mysql://localhost:3306/shadowverse_collection";
@@ -27,7 +27,7 @@ public class SVCollectionDB {
             classNotFound.printStackTrace();
             System.exit(-1);
         }
-
+//todo: split up excel parsing and database creation
         try {
             connection = DriverManager.getConnection(DB_URL, USERNAME, PASSWORD);
             statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
@@ -95,8 +95,6 @@ public class SVCollectionDB {
         }
         return 0;
     }
-
-
 
     public static void closeDB(){
         try {

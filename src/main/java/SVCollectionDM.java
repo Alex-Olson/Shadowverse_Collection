@@ -1,4 +1,5 @@
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableModel;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -11,6 +12,7 @@ public class SVCollectionDM extends AbstractTableModel {
     public SVCollectionDM(ResultSet rs){
         this.rs = rs;
     }
+
 
     @Override
     public int getRowCount() {
