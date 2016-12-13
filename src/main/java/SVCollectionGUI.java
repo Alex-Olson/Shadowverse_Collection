@@ -15,8 +15,13 @@ public class SVCollectionGUI extends JFrame {
     private JTable svCollectionTable;
     private JButton countButton;
     private JTextField nameTextField;
-    TableRowSorter<SVCollectionDM> rowSorter;
+    private TableRowSorter<SVCollectionDM> rowSorter;
 
+
+    /**
+     *
+     * @param svCollectionDM the table model used for the Jtable.
+     */
     SVCollectionGUI(final SVCollectionDM svCollectionDM) {
         super("Shadowverse Collection");
         setContentPane(rootPanel);
@@ -29,9 +34,12 @@ public class SVCollectionGUI extends JFrame {
         rowSorter = new TableRowSorter<>(svCollectionDM);
         svCollectionTable.setRowSorter(rowSorter);
         List<RowSorter.SortKey> sortKeys = new ArrayList<>();
-        //fixes the integers not sorting correctly (sorted like 1, 10, 2, etc)
-        //method taken from http://stackoverflow.com/questions/9090974/problems-with-jtable-sorting-of-integer-values
+
+        /**
+         * fixes the integers not sorting correctly (sorted like 1, 10, 2, etc)
+         */
         rowSorter.setComparator(4, new Comparator<String>() {
+            //method taken from http://stackoverflow.com/questions/9090974/problems-with-jtable-sorting-of-integer-values
 
             @Override
             public int compare(String s1, String s2){
@@ -42,7 +50,9 @@ public class SVCollectionGUI extends JFrame {
         rowSorter.setSortable(5, false);
         rowSorter.setSortKeys(sortKeys);
 
-        //this adds a listener that filters the table by card name when the textbox is altered. method taken from http://docs.oracle.com/javase/tutorial/uiswing/components/table.html#sorting
+        /**
+         * this adds a listener that filters the table by card name when the textbox is altered. method taken from http://docs.oracle.com/javase/tutorial/uiswing/components/table.html#sorting
+         */
         nameTextField.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
@@ -81,13 +91,14 @@ public class SVCollectionGUI extends JFrame {
                 System.exit(0);
             }
         });
-
-
     }
 
+    /**
+     * filters out the Jtable to only show rows with the character sequence that
+     * matches the characters in nameTextField.
+     */
     private void filterByName(){
-        RowFilter<SVCollectionDM, Object> rf = null;
-
+        RowFilter<SVCollectionDM, Object> rf;
         try {
             rf = RowFilter.regexFilter("(?i)" + nameTextField.getText(), 2);
         } catch (java.util.regex.PatternSyntaxException e) {

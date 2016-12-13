@@ -1,28 +1,26 @@
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.DefaultTableModel;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class SVCollectionDM extends AbstractTableModel {
+/**
+ * SVCollectionDM is the modified table model used for the Jtable in the gui.
+ */
+class SVCollectionDM extends AbstractTableModel {
 
     private int rows = 0;
+    private ResultSet rs;
 
-    ResultSet rs;
-
-    public SVCollectionDM(ResultSet rs){
+    SVCollectionDM(ResultSet rs){
         this.rs = rs;
     }
 
-
     @Override
     public int getRowCount() {
-
         countRows();
-
         return rows;
     }
 
-    public void countRows(){
+    private void countRows(){
         rows = 0;
         try {
             rs.beforeFirst();
@@ -30,7 +28,7 @@ public class SVCollectionDM extends AbstractTableModel {
                 rows++;
             }
         } catch (SQLException sqle){
-            System.out.println(sqle);
+            sqle.printStackTrace();
         }
     }
 
@@ -39,7 +37,7 @@ public class SVCollectionDM extends AbstractTableModel {
         try {
             return rs.getMetaData().getColumnCount();
         } catch (SQLException sqle) {
-            System.out.println(sqle);
+            sqle.printStackTrace();
             return 0;
         }
     }
@@ -51,15 +49,18 @@ public class SVCollectionDM extends AbstractTableModel {
             Object o = rs.getObject(columnIndex+1);
             return o.toString();
         } catch (SQLException sqle){
-            System.out.println(sqle);
+            sqle.printStackTrace();
             return sqle.toString();
         }
     }
 
+
     @Override
     public boolean isCellEditable(int row, int col){
+        //cells can't be edited unless it is in the Number_owned column
         return col == 5;
     }
+
 
     @Override
     public void setValueAt(Object newInt, int row, int column){
@@ -85,7 +86,7 @@ public class SVCollectionDM extends AbstractTableModel {
         }
     }
 
-    public void updateModel(ResultSet rs){
+    void updateModel(ResultSet rs){
         this.rs = rs;
         countRows();
     }
